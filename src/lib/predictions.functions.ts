@@ -34,9 +34,24 @@ export const predictTrafficFn = createServerFn({ method: "POST" })
     return result;
   });
 
+export type PredictionRow = {
+  id: string;
+  hour: number;
+  day_of_week: number;
+  temperature: number;
+  rain: number;
+  holiday: number;
+  junction: number;
+  vehicles: number;
+  nearby_events: number;
+  prediction: string;
+  confidence: number;
+  created_at: string;
+};
+
 export const getHistoryFn = createServerFn({ method: "GET" })
   .inputValidator((d: unknown) => z.object({ limit: z.number().int().min(1).max(500).optional() }).parse(d ?? {}))
-  .handler(async ({ data }) => {
+  .handler(async ({ data }): Promise<{ rows: PredictionRow[]; error: string | null }> => {
     const { data: rows, error } = await supabaseAdmin
       .from("predictions")
       .select("*")
@@ -44,7 +59,7 @@ export const getHistoryFn = createServerFn({ method: "GET" })
       .limit(data.limit ?? 100);
     if (error) {
       console.error(error);
-      return { rows: [] as Array<Record<string, unknown>>, error: error.message };
+      return { rows: [], error: error.message };
     }
-    return { rows: rows ?? [], error: null as string | null };
+    return { rows: (rows ?? []) as PredictionRow[], error: null };
   });
