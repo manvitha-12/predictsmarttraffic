@@ -14,7 +14,51 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      predictions: {
+        Row: {
+          confidence: number
+          created_at: string
+          day_of_week: number
+          holiday: number
+          hour: number
+          id: string
+          junction: number
+          nearby_events: number
+          prediction: string
+          rain: number
+          temperature: number
+          vehicles: number
+        }
+        Insert: {
+          confidence?: number
+          created_at?: string
+          day_of_week?: number
+          holiday?: number
+          hour: number
+          id?: string
+          junction?: number
+          nearby_events?: number
+          prediction: string
+          rain?: number
+          temperature: number
+          vehicles: number
+        }
+        Update: {
+          confidence?: number
+          created_at?: string
+          day_of_week?: number
+          holiday?: number
+          hour?: number
+          id?: string
+          junction?: number
+          nearby_events?: number
+          prediction?: string
+          rain?: number
+          temperature?: number
+          vehicles?: number
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
